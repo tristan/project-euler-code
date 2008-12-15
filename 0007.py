@@ -26,16 +26,14 @@ def sieveoferatosthenes(prime=6, smax=-1):
                 break
         #print 'got prime:', i
         primes.append(i)
-        if len(primes) % 100 == 0:
-            print 'found', len(primes), 'primes so far'
+        #if len(primes) % 100 == 0:
+        #    print 'found', len(primes), 'primes so far'
     print 'found', len(primes), 'primes'
     if len(primes) < prime:
         return -1
     return primes[prime-1]
 
-
-
 if __name__ == "__main__":
-    if sieveoferatosthenes() != 13:
-        raise Exception("sieve function broken")
+    #if sieveoferatosthenes() != 13:
+    #    raise Exception("sieve function broken")
     print sieveoferatosthenes(10001, (10 ** 6))
