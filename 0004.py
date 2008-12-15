@@ -14,6 +14,6 @@ if __name__ == '__main__':
         for j in xrange(100, 1000):
             r = i * j
             if ispalindromic(r) and r > largestp:
-                print r
+                #print r
                 largestp = r
     print 'Largest palindromic:', largestp

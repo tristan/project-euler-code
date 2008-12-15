@@ -12,20 +12,18 @@
 (defn find-largest-factor-of-number 
     ([num] (find-largest-factor-of-number num (reverse (sieve-of-eratosthenes (int (Math/sqrt (float num)))))))
     ([num lst]
-	  (println lst)
-	  (if (= lst nil)
-	      nil
-	      (if (factor-of? (first lst) num)
-		  (first lst)
-		  (find-largest-factor-of-number num (rest lst))
-		  ))))
+       (loop [l lst]
+	 (if (= (count l) 0)
+	   nil
+	   (if (factor-of? (first l) num)
+	     (first l)
+	     (recur (rest l)))))))
 
 (defn problem-three 
     [num]
   (find-largest-factor-of-number num))
 
-(try 
-(if (= (problem-three 13195) 29)
-    (problem-three 600851475143)
-    (println "tests failed"))
-(catch Exception e (print "Error")))
+(defn test []
+  (= (problem-three 13195) 29))
+
+(println (problem-three 600851475143))
