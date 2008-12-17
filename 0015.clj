@@ -3,6 +3,15 @@
 ; start at x,y 0,0
 ; recurse left, recurse down
 
+(defn memoize [f]
+  (let [mem (atom {})]
+    (fn [& args]
+      (if-let [e (find @mem args)]
+        (val e)
+        (let [ret (apply f args)]
+          (swap! mem assoc args ret)
+          ret)))))
+
 (defn find-all-paths 
   ([max-x max-y] (find-all-paths 0 0 max-x max-y))
   ([x y max-x max-y]
@@ -16,6 +25,8 @@
 	     (+ (find-all-paths (inc x) y max-x max-y) (find-all-paths x (inc y) max-x max-y))
 	     1 ; if we've hit a boundary, there is only 1 path to follow from there till the end
 	     ))))))
+
+(def find-all-paths (memoize find-all-paths))
 
 (loop [i 1]
   (if (< 20 i)
