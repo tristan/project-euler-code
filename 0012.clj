@@ -17,9 +17,9 @@
 (defn find-fist-triangle-number-to-have-over-five-hundred-divisors []
   (loop [n 1 tri 1]
     (let [divisors (list-factors tri)]
-      (println tri ":" divisors)
+      ;(println tri ":" (nthrest divisors (- (count divisors) 10)))
       (if (> (count divisors) 500)
-	(list tri divisors)
+	(list tri (nthrest divisors (- (count divisors) 10)))
 	(recur (inc n) (+ tri (inc n)))))))
 
 
@@ -48,13 +48,6 @@
     (/ n (find-smallest-factor n))))
 
 ; (1 2 ... 499 998)
-
-(defn step-one [no-of-divisors]
-  (loop [n (- no-of-divisors 2)]
-    (let [sf (find-smallest-factor n)]
-      (if (>= (- n sf) (- no-of-divisors 2))
-	(list sf n)
-	(recur (inc n))))))
 
 ;(println (step-one 6))
 ; (1 2 3 4 5 6)
@@ -126,5 +119,25 @@
 	    (recur vect (inc ptr))
 	    (recur (increase-all-if-needed (assoc vect ptr (inc (nth vect ptr))) ptr) ptr)))))))
 
-(println (find-first-triange-with-at-least-min-divisors 501))
+;(println (find-first-triange-with-at-least-min-divisors 501))
 ;(println (get-next-triangle-larger-than 10))
+
+(defn find-if-number-has-x-factors [number x]
+  (let [limit (sqrt number)]
+    (loop [found 0 n 2]
+      (if (= (* found 2) x)
+	true
+	(if (> n limit)
+	  false
+	  (if (zero? (rem number n))
+	    (recur (inc found) (inc n))
+	    (recur found (inc n))))))))
+
+
+(defn find-first-triangle-to-have-more-than-five-hundred-divisors []
+  (loop [n 2 tri 1]
+    (if (find-if-number-has-x-factors tri 500)
+      tri
+      (recur (inc n) (+ tri n)))))
+
+(println (find-first-triangle-to-have-more-than-five-hundred-divisors))
