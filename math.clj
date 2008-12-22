@@ -30,3 +30,5 @@
 
 (defn sum [lst]
   (apply #'+ lst))
+
+(defn log10 [x] (. Math (log10 x)))
