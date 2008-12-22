@@ -5,5 +5,6 @@
       (sieve-helper (+ x 1) n li)
       (sieve-helper (+ x 1) n (cons x li)))))
 
+; this one runs rather slowly
 (defn sieve [n]
   (reverse (sieve-helper 2 n '(2))))

@@ -1,3 +1,3 @@
 (load-file "primes.clj")
 
-(println (sieve 100))
+(sieve 1000000)
