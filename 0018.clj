@@ -83,5 +83,5 @@
 	    (recur (rest old-list) (cons (first old-list) new-list) stack))))))
     
 
-(let [blah (get-all-paths input-data)]
-  (println (apply max (flatten-list blah))))
+;(let [blah (get-all-paths input-data)]
+;  (println (apply max (flatten-list blah))))
