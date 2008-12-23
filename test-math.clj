@@ -19,7 +19,7 @@
 	(println "1 /" ctr "=" (longdiv 1 ctr))
 	(recur (inc ctr))))))
 
-(defn test-long-div []
-  (println (longdiv 1 84)))
+;(defn test-long-div []
+;  (println (longdiv 1 84)))
 
 (test-long-div)

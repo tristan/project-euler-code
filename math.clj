@@ -1,3 +1,6 @@
+(load-file "string-lib.clj")
+(load-file "list-lib.clj")
+
 (defn ceil [x]
   (int (. Math (ceil x))))
 
@@ -11,13 +14,6 @@
   (if (neg? x)
     (- x)
     x))
-
-(defn in? [lst n]
-  (if (nil? lst)
-    false
-    (if (= (first lst) n)
-      true
-      (in? (rest lst) n))))
 
 (defn list-divisors
   ([n] (list-divisors n
@@ -33,53 +29,17 @@
 
 (defn log10 [x] (. Math (log10 x)))
 
-(defn char-to-number [c]
-  (if (= c \.)
-    c
-    (if (or (< (int c) 48) (> (int c) 57))
-      nil
-      (- (int c) 48))))
-
-(defn get-recuring-sequence 
-  [numbers] 
-  (if (or (< (count numbers) 2) (not (zero? (rem (count numbers) 2))))
-    nil
-    (loop [nums1 numbers nums2 (rest numbers)]
-      ;(println nums1 nums2)
-      (if (nil? nums2)
-	(if (nil? (rest nums1))
-	  nil
-	  (recur (rest nums1) (rest (rest nums1))))
-	(if (= (first nums1) (first nums2))
-	  (let [sequ (take-while (fn [x] (not (nil? x))) (map (fn [x y] (if (= x y) x nil)) nums1 nums2))]
-	    (if (= (count sequ) (- (count nums1) (count nums2)))
-	      (cons sequ (reverse (take (- (- (count numbers) (count nums1)) 1) numbers)))
-	      (recur nums1 (rest nums2))))
-	  (recur nums1 (rest nums2)))))))
-; note: this can be done quicker if we know that (rest numbers) has no recuring 
-
-(defn get-recuring-sequence-if-no-recuring-sequences-in-rest [numbers]
-  (if (or (< (count numbers) 2) (not (zero? (rem (count numbers) 2))))
-    nil
-    (let [a (split-at (/ (count numbers) 2) numbers)]
-      (if (= (first a) (last a))
-	(first a)
-	nil))))
-
-(defn check-for-recuring-sequence [numbers]
-  (not (nil? (get-recuring-sequence numbers))))
-
 (defn longdiv [dividend divisor]
-  (reverse 
-  (loop [result (list) dividend (map char-to-number (seq (str dividend))) remainder 0 pushed-decimal false]
+  (loop [result (list) dividend (map char-to-number (seq (str dividend))) remainder 0 pushed-decimal false loop-watcher (list)]
     (if (and (nil? dividend) (zero? remainder))
-      result
-      (if (= (first dividend) \.) ; push the decimal point through
-	(recur (cons \. result) (rest dividend) remainder true)
-	(if (and (nil? dividend) (not pushed-decimal))
-	  (recur (cons \. result) nil remainder true)
-	  (if (and pushed-decimal (not (nil? (get-recuring-sequence (reverse (take-while (fn [x] (not (= x \.))) result))))))
-	    (concat (get-recuring-sequence (reverse (take-while (fn [x] (not (= x \.))) result))) '(\.) (rest (drop-while (fn [x] (not (= x \.))) result)))
-	    (let [divisee (+ (* 10 remainder) (if (nil? (first dividend)) 0 (first dividend)))]
-	      (recur (cons (floor (/ divisee divisor)) result) (rest dividend) (rem divisee divisor) pushed-decimal)))))))
-))
+      (if (not (= (first (rest result)) \'))
+	(reverse (cons 0 (cons \' result)))
+	(reverse result))
+      (if (or (= (first dividend) \.) (and (not pushed-decimal) (nil? dividend) (not (zero? remainder))))
+	(recur (cons \. result) (rest dividend) remainder true loop-watcher) ; push the decimal point through
+	(let [divisee (+ (* 10 remainder) (if (nil? (first dividend)) 0 (first dividend)))]
+	  (if (and pushed-decimal (in? loop-watcher divisee))
+	    (recur (cons (inc (count (take-while (fn [x] (not (= x divisee))) loop-watcher))) (cons \' result)) nil 0 true nil) ; found a loop, done
+	    (let [val (floor (/ divisee divisor)) remain (rem divisee divisor)]
+	      (recur (cons val result) (rest dividend) remain pushed-decimal (if pushed-decimal (cons divisee loop-watcher) loop-watcher))
+	      )))))))
