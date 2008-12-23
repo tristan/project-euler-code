@@ -27,6 +27,11 @@
 (defn sum [lst]
   (apply #'+ lst))
 
+(defn pow [nbr pwr]
+  (if (< pwr 2)
+    nbr
+    (* nbr (pow nbr (dec pwr)))))
+
 (defn log10 [x] (. Math (log10 x)))
 
 (defn longdiv [dividend divisor]

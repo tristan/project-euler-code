@@ -1,10 +1,7 @@
+(load-file "math.clj")
+
 (defn str-to-int [s]
   (. Integer (parseInt s)))
-
-(defn pow [nbr pwr]
-  (if (< pwr 2)
-    nbr
-    (* nbr (pow nbr (dec pwr)))))
 
 (defn sum-numbers-in-string [string]
   (loop [ptr 0 sum 0]
