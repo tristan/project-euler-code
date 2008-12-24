@@ -48,3 +48,13 @@
 	    (let [val (floor (/ divisee divisor)) remain (rem divisee divisor)]
 	      (recur (cons val result) (rest dividend) remain pushed-decimal (if pushed-decimal (cons divisee loop-watcher) loop-watcher))
 	      )))))))
+
+
+(defn integer-to-binary-helper [nbr base]
+  (if (< nbr 1)
+    nil
+    (cons (rem nbr base) (integer-to-binary-helper (floor (/ nbr base)) base))))
+
+(defn integer-to-binary
+  ([nbr] (integer-to-binary nbr 2))
+  ([nbr base] (reverse (integer-to-binary-helper nbr base))))

@@ -22,4 +22,11 @@
 ;(defn test-long-div []
 ;  (println (longdiv 1 84)))
 
-(test-long-div)
+;(test-long-div)
+
+
+(defn test-int-to-bin []
+  (println (integer-to-binary 585))
+  (println (integer-to-binary 580)))
+
+(test-int-to-bin)
