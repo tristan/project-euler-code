@@ -41,3 +41,11 @@
 
 (defn check-for-recuring-sequence [numbers]
   (not (nil? (get-recuring-sequence numbers))))
+
+(defn unique [lst]
+  (loop [l lst n (list)]
+    (if (nil? l)
+      (sort n)
+      (if (in? n (first l))
+	(recur (rest l) n)
+	(recur (rest l) (cons (first l) n))))))

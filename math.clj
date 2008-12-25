@@ -34,6 +34,11 @@
 
 (defn log10 [x] (. Math (log10 x)))
 
+(defn ! [nbr]
+  (if (<= nbr 1)
+    1
+    (* nbr (! (dec nbr)))))
+
 (defn longdiv [dividend divisor]
   (loop [result (list) dividend (map char-to-number (seq (str dividend))) remainder 0 pushed-decimal false loop-watcher (list)]
     (if (and (nil? dividend) (zero? remainder))
