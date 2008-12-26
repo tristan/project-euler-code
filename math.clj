@@ -1,5 +1,4 @@
 (load-file "string-lib.clj")
-(load-file "list-lib.clj")
 
 (defn ceil [x]
   (int (. Math (ceil x))))
@@ -28,9 +27,11 @@
   (apply #'+ lst))
 
 (defn pow [nbr pwr]
-  (if (< pwr 2)
-    nbr
-    (* nbr (pow nbr (dec pwr)))))
+  (if (= pwr 0)
+    1
+    (if (< pwr 0)
+      (apply #'/ (take (+ 2 (abs pwr)) (iterate #'float (float nbr))))
+      (* nbr (pow nbr (dec pwr))))))
 
 (defn log10 [x] (. Math (log10 x)))
 
@@ -48,7 +49,7 @@
       (if (or (= (first dividend) \.) (and (not pushed-decimal) (nil? dividend) (not (zero? remainder))))
 	(recur (cons \. result) (rest dividend) remainder true loop-watcher) ; push the decimal point through
 	(let [divisee (+ (* 10 remainder) (if (nil? (first dividend)) 0 (first dividend)))]
-	  (if (and pushed-decimal (in? loop-watcher divisee))
+	  (if (and pushed-decimal (< 0 (count (filter #(= divisee %) loop-watcher))))
 	    (recur (cons (inc (count (take-while (fn [x] (not (= x divisee))) loop-watcher))) (cons \' result)) nil 0 true nil) ; found a loop, done
 	    (let [val (floor (/ divisee divisor)) remain (rem divisee divisor)]
 	      (recur (cons val result) (rest dividend) remain pushed-decimal (if pushed-decimal (cons divisee loop-watcher) loop-watcher))
@@ -63,3 +64,17 @@
 (defn integer-to-binary
   ([nbr] (integer-to-binary nbr 2))
   ([nbr base] (reverse (integer-to-binary-helper nbr base))))
+
+(defn prime? [nbr]
+  (if (< nbr 2)
+    false
+    (if (< nbr 4)
+      true
+      (loop [ctr (ceil (sqrt nbr))]
+	(if (< ctr 2)
+	  true
+	  (if (zero? (rem nbr ctr))
+	    false
+	    (recur (dec ctr))))))))
+
+

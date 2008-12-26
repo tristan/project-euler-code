@@ -1,3 +1,5 @@
+(load-file "math.clj")
+
 (defn in? [lst n]
   (if (nil? lst)
     false
@@ -49,3 +51,22 @@
       (if (in? n (first l))
 	(recur (rest l) n)
 	(recur (rest l) (cons (first l) n))))))
+
+(defn cycle-list [lst] (concat (rest lst) (list (first lst))))
+
+(defn list-to-number [lst]
+  (if (nil? lst)
+    0
+    (+ (* (first lst) (pow 10 (dec (count lst)))) (list-to-number (rest lst)))))
+
+(defn and-list 
+  ([lst] (if (nil? lst)
+	   false
+	   (and-list lst true)))
+  ([lst a]
+     (if (nil? lst)
+       true
+       (if (not (first lst))
+	 false
+	 (and (first lst) (and-list (rest lst) true)))))
+)
