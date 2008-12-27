@@ -11,7 +11,8 @@
 (defn sieve [n]
   (reverse (sieve-helper 2 n '(2))))
 
-
+; the same sieve with a few optimisations and a loop to deal with tail-recursion
+; still too slow
 (defn sieve [n]
   (reverse
    (loop [x 2 li '(2)]
@@ -27,18 +28,18 @@
 
 ; using vectors speeds things up
 (defn sieve [n]
-  (loop [x 2 li [2]]
-    (if (= x n)
+  (loop [x 3 li [2]]
+    (if (>= x n)
       li
       ;(if (> (count li) (count (take-while #(not (zero? (rem x %))) li)))
       ; custom loop is much faster
       ; speed up gained by only testing up to sqrt of x
       (if (let [sqrtx (sqrt x)]
-	    (loop [tst li]
+	    (loop [tst (rest li)] ; can skip 2 since we already removed that case
 	      (if (or (nil? tst) (> (first tst) sqrtx))
 		false
 		(if (zero? (rem x (first tst)))
 		  true
 		  (recur (rest tst))))))
-	(recur (inc x) li)
-	(recur (inc x) (assoc li (count li) x))))))
+	(recur (+ 2 x) li) ; plus 2 instead of 1, since no even cases will ever work
+	(recur (+ 2 x) (assoc li (count li) x))))))
