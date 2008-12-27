@@ -78,3 +78,9 @@
 	    (recur (dec ctr))))))))
 
 
+(defn triangle? [nbr]
+  ; from http://en.wikipedia.org/wiki/Triangular_number#Tests_for_triangular_numbers
+  (let [a (/ (- (sqrt (+ (* 8 nbr) 1)) 1) 2)]
+    (if (= a (floor a))
+      true
+      false)))
