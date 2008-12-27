@@ -40,8 +40,12 @@
       (if (< (. Math (sqrt (float max))) (inc (last primes)))
 	(expand-vector-of-primes primes max) ; need to fill rest
 	(recur (expand-vector-of-primes primes max))))))
- 					    
-;(sieve-of-eratosthenes 1000000)
+ 					
+(time (sieve-of-eratosthenes 100))
+(time (sieve-of-eratosthenes 1000))
+(time (sieve-of-eratosthenes 10000))
+(time (sieve-of-eratosthenes 100000))
+(time (sieve-of-eratosthenes 1000000))
 ;;(println (strike-multiples-from-sieve (list true true true true true true true true true true true) 2))
 
 
