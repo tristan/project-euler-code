@@ -18,7 +18,7 @@
 			 (+ (last (first pairs)) z)
 			 (+ (first (first pairs)) (last (first pairs)) z))
 		   triplets)))))
-
+(time 
 (loop [z 2 store (hash-map)]
   (if (not (nil? (get store :done nil)))
     (println "result:" (get store :max))
@@ -37,3 +37,4 @@
 				:max (if (> (inc oldcount) (get tmpstore oldmax 0))
 				       sumt
 				       oldmax))))))))))))
+)
