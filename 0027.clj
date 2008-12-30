@@ -15,6 +15,7 @@
 	  (if (zero? (rem nbr (first ps)))
 	    false
 	    (recur sqrtnbr (rest ps))))))))
+; TODO: update to use prime? from primes.clj
 
 (defn quadratic [n a b]
   (+ (* n n) (* a n) b))

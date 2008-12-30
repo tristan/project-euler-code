@@ -1,4 +1,6 @@
-(load-file "math.clj")
+(ns primes
+  (:load "math"))
+
 
 (defn sieve-helper [x n li]
   (if (= x n)
@@ -34,7 +36,7 @@
       ;(if (> (count li) (count (take-while #(not (zero? (rem x %))) li)))
       ; custom loop is much faster
       ; speed up gained by only testing up to sqrt of x
-      (if (let [sqrtx (sqrt x)]
+      (if (let [sqrtx (math/sqrt x)]
 	    (loop [tst (rest li)] ; can skip 2 since we already removed that case
 	      (if (or (nil? tst) (> (first tst) sqrtx))
 		false
@@ -43,3 +45,19 @@
 		  (recur (rest tst))))))
 	(recur (+ 2 x) li) ; plus 2 instead of 1, since no even cases will ever work
 	(recur (+ 2 x) (assoc li (count li) x))))))
+
+(defn prime? 
+  ([nbr] (prime? nbr (sieve 100000)))
+  ([nbr prime-sieve] 
+  (if (< nbr 2)
+    false
+    (loop [sqrtnbr (math/sqrt nbr) ps prime-sieve]
+      (if (nil? ps)
+	(do
+	  (println "WARNING: EXCEEDED SIZE OF SIEVE")
+	  true)
+	(if (< sqrtnbr (first ps))
+	  true
+	  (if (zero? (rem nbr (first ps)))
+	    false
+	    (recur sqrtnbr (rest ps)))))))))

@@ -1,4 +1,5 @@
-(load-file "string-lib.clj")
+(ns math
+    (:load "string-lib"))
 
 (defn ceil [x]
   (int (. Math (ceil x))))
@@ -32,6 +33,14 @@
     (if (< pwr 0)
       (apply #'/ (take (+ 2 (abs pwr)) (iterate #'float (float nbr))))
       (* nbr (pow nbr (dec pwr))))))
+
+(defn loop-pow [nbr pwr]
+  (loop [n nbr p pwr r 1]
+    (if (= p 0)
+      r
+      (if (< p 0)
+	(apply #'/ (take (+ 2 (abs pwr)) (iterate #'float (float nbr))))
+	(recur n (dec p) (* r n))))))
 
 (defn log10 [x] (. Math (log10 x)))
 
