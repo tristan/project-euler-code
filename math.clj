@@ -93,3 +93,10 @@
     (if (= a (floor a))
       true
       false)))
+
+(defn list-numbers-in 
+  ([nbr] (list-numbers-in nbr 1))
+  ([nbr tenth]
+     (if (= nbr (rem nbr tenth))
+       nil
+       (cons (rem (/ (- nbr (rem nbr tenth)) tenth) 10) (list-numbers-in nbr (* tenth 10))))))
