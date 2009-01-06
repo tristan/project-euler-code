@@ -79,13 +79,13 @@
     false
     (if (< nbr 4)
       true
-      (loop [ctr (ceil (sqrt nbr))]
-	(if (< ctr 2)
-	  true
-	  (if (zero? (rem nbr ctr))
-	    false
-	    (recur (dec ctr))))))))
-
+      (let [limit (sqrt nbr)]
+	(loop [ctr 2]
+	  (if (< limit ctr)
+	    true
+	    (if (zero? (rem nbr ctr))
+	      false
+	      (recur (inc ctr)))))))))
 
 (defn triangle? [nbr]
   ; from http://en.wikipedia.org/wiki/Triangular_number#Tests_for_triangular_numbers

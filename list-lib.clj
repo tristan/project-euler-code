@@ -57,7 +57,7 @@
 (defn list-to-number [lst]
   (if (nil? lst)
     0
-    (+ (* (first lst) (pow 10 (dec (count lst)))) (list-to-number (rest lst)))))
+    (+ (* (first lst) (math/pow 10 (dec (count lst)))) (list-to-number (rest lst)))))
 
 (defn and-list 
   ([lst] (if (nil? lst)
