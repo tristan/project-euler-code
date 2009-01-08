@@ -42,4 +42,4 @@
 	    n
 	    (recur nos (dec p))))))))
        
-(time (println (problem-forty-one)))
+;(time (println (problem-forty-one)))
