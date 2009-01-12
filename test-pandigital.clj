@@ -1,0 +1,10 @@
+(load-file "pandigital.clj")
+
+(println (get-permutation 0 0 9))
+(println (get-permutation 1 0 9))
+(println (get-permutation 2 0 9))
+(println (get-permutation 3 0 9))
+(println (get-permutation 0 1 9))
+(println (get-permutation 1 1 9))
+(println (get-permutation 2 1 9))
+(println (get-permutation 3 1 9))
