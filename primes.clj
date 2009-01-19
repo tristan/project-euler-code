@@ -61,3 +61,10 @@
 	  (if (zero? (rem nbr (first ps)))
 	    false
 	    (recur sqrtnbr (rest ps)))))))))
+
+; TODO: benchmark both versions of prime
+(defn prime?
+  ([nbr] (prime? nbr (sieve 100000)))
+  ([nbr prime-sieve] 
+  (= nbr (last (take-while #(>= nbr %) prime-sieve)))))
+      
