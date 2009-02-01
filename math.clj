@@ -74,6 +74,14 @@
   ([nbr] (integer-to-binary nbr 2))
   ([nbr base] (reverse (integer-to-binary-helper nbr base))))
 
+(defn binary-to-integer
+  ([bin] (binary-to-integer (reverse bin) 1))
+  ([bin n]
+	(if (nil? bin)
+	    0
+	  (+ (* n (first bin)) (binary-to-integer (rest bin) (* n 2))))))
+   
+
 (defn prime? [nbr]
   (if (< nbr 2)
     false
@@ -100,3 +108,12 @@
      (if (= nbr (rem nbr tenth))
        nil
        (cons (rem (/ (- nbr (rem nbr tenth)) tenth) 10) (list-numbers-in nbr (* tenth 10))))))
+
+
+(defn round [nbr places]
+  (let [pwr (pow 10.0 places)]
+       (let [v (* nbr pwr)]
+	    (let [a (floor v) b (rem v 1)]
+		 (if (< 0.5 b)
+		     (/ (inc a) pwr)
+		   (/ a pwr))))))
