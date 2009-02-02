@@ -34,13 +34,38 @@
       (apply #'/ (take (+ 2 (abs pwr)) (iterate #'float (float nbr))))
       (* nbr (pow nbr (dec pwr))))))
 
-(defn loop-pow [nbr pwr]
+; uses a loop to prevent stack overflows with large numbers
+(defn pow [nbr pwr]
   (loop [n nbr p pwr r 1]
     (if (= p 0)
       r
       (if (< p 0)
 	(apply #'/ (take (+ 2 (abs pwr)) (iterate #'float (float nbr))))
 	(recur n (dec p) (* r n))))))
+
+; used by fast-pow
+(defn build-equation 
+  ([total denominations] (build-equation total denominations '()))
+  ([total denominations result] 
+     (if (nil? denominations)
+       result
+       (let [fits (/ (- total (rem total (first denominations))) (first denominations))]
+	 (recur 
+	  (- total (* fits (first denominations)))
+	  (rest denominations)
+	  (concat result
+		  (take fits (repeat (first denominations)))))))))
+
+(defn fast-pow [a n]
+  (let [lim (/ n 2)]
+    (loop [r {1 a} i 1]
+      (if (> (* 2 i) lim)
+	(let [eqn (build-equation n (reverse (sort (keys r))))]
+	  (apply #'* (map #(get r %) eqn))
+	  )
+	(recur (assoc r (* 2 i) (* (get r i) (get r i))) (* 2 i))))))
+
+(defn log [x] (. Math (log x)))
 
 (defn log10 [x] (. Math (log10 x)))
 
@@ -117,3 +142,51 @@
 		 (if (< 0.5 b)
 		     (/ (inc a) pwr)
 		   (/ a pwr))))))
+
+; binary GCD algorithm ported from the C code at:
+; http://en.wikipedia.org/wiki/Binary_GCD_algorithm#Implementation_in_C
+(defn gcd [u v]
+  (if (or (zero? u) (zero? v))
+    (bit-or u v)
+    (loop [shift 0 u (abs u) v (abs v)]
+      (if (not (zero? (bit-and (bit-or u v) 1)))
+	(loop [u u]
+	  (if (not (zero? (bit-and u 1)))
+	    (loop [u u v v]
+	      (if (zero? v)
+		(bit-shift-left u shift)
+		(let [v (loop [v v] (if (not (zero? (bit-and v 1))) v (recur (bit-shift-right v 1))))]
+		  (recur
+		   (if (< u v) u v)
+		   (if (< u v) (bit-shift-right (- v u) 1) (bit-shift-right (- u v) 1))))))
+	    (recur (bit-shift-right u 1))))
+	(recur (inc shift) (bit-shift-right u 1) (bit-shift-right v 1))))))
+
+(defn coprime? 
+  ([a b] (= 1 (gcd a b)))
+  ([a b prime-sieve]
+     (let [lim (min (sqrt a) (sqrt b))]
+       (if (or (zero? (rem a b)) (zero? (rem b a)))
+	 false
+	 (loop [ps prime-sieve]
+	   (if (> (first ps) lim)
+	     true
+	     (if (and (zero? (rem a (first ps))) (zero? (rem b (first ps))))
+	       false
+	       (recur (rest ps)))))))))
+
+(defn phi ([n]
+  (loop [k 2 c 1]
+    (if (> k n)
+      c
+      (recur (inc k) (if (coprime? n k) (inc c) c)))))
+  ([n prime-sieve]
+     (loop [k 2 c 1 remaining-primes prime-sieve]
+       (if (> k n)
+	 c
+	 (if (= k (first remaining-primes))
+	   (recur (inc k) (inc c) (rest remaining-primes))
+	   (recur (inc k) 
+		  (if (coprime? n k prime-sieve) (inc c) c)
+		  remaining-primes
+		  ))))))

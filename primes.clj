@@ -51,19 +51,20 @@
   ([nbr prime-sieve] 
   (if (< nbr 2)
     false
-    (loop [sqrtnbr (math/sqrt nbr) ps prime-sieve]
-      (if (nil? ps)
-	(do
-	  (println "WARNING: EXCEEDED SIZE OF SIEVE")
-	  true)
-	(if (< sqrtnbr (first ps))
-	  true
-	  (if (zero? (rem nbr (first ps)))
-	    false
-	    (recur sqrtnbr (rest ps)))))))))
+    (let [sqrtnbr (math/sqrt nbr)]
+      (loop [ps prime-sieve]
+	(if (nil? ps)
+	  (do
+	    (println "WARNING: EXCEEDED SIZE OF SIEVE")
+	    true)
+	  (if (< sqrtnbr (first ps))
+	    true
+	    (if (zero? (rem nbr (first ps)))
+	      false
+	      (recur (rest ps))))))))))
 
 ; TODO: benchmark both versions of prime
-(defn prime?
+(defn quick-prime?
   ([nbr] (prime? nbr (sieve 100000)))
   ([nbr prime-sieve] 
   (= nbr (last (take-while #(>= nbr %) prime-sieve)))))

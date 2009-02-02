@@ -13,7 +13,6 @@
   (+ 1 (/ 1 (+ 1 n))))
 
 (loop [n 1 frac (/ 3 2) counter 0]
-      (println n)
       (if (> n 1000)
 	  (do
 	      (println "result:" counter)
