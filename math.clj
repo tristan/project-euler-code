@@ -145,7 +145,7 @@
 
 ; binary GCD algorithm ported from the C code at:
 ; http://en.wikipedia.org/wiki/Binary_GCD_algorithm#Implementation_in_C
-(defn gcd [u v]
+(defn binary-gcd [u v]
   (if (or (zero? u) (zero? v))
     (bit-or u v)
     (loop [shift 0 u (abs u) v (abs v)]
@@ -161,6 +161,13 @@
 		   (if (< u v) (bit-shift-right (- v u) 1) (bit-shift-right (- u v) 1))))))
 	    (recur (bit-shift-right u 1))))
 	(recur (inc shift) (bit-shift-right u 1) (bit-shift-right v 1))))))
+
+(defn euclidean-gcd [a b]
+  (if (<= a 0)
+    b
+    (recur (rem b a) a)))
+
+(def gcd euclidean-gcd)
 
 (defn coprime? 
   ([a b] (= 1 (gcd a b)))
