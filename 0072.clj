@@ -34,6 +34,7 @@
 
 ;(println (time (phi 1000000)))
 ;(println (time (reduce-fraction 1000000)))
+; TODO: optimize optimise slow
 
 ;;; FAILED!!
 

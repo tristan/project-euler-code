@@ -17,7 +17,6 @@
 ; see item 11 on: http://mathworld.wolfram.com/PartitionFunctionP.html
 (defn euler-generating-function 
   ([n] 
-     (println "N:" n)
      (if (= n 0)
        1
        (if (< n 0)
@@ -43,3 +42,5 @@
 ;(println (euler-generating-function 6))
 ;(println (euler-generating-function 7))
 (println (euler-generating-function 100))
+
+; TODO: slow optimize optimise
