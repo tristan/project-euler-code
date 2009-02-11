@@ -1,37 +1,33 @@
 (load-file "math.clj")
 
-(defn iterate-chain [n]
-  (math/sum (map #'math/! (math/list-numbers-in n))))
-
 (defn count-chain [start cache]
   (loop [vals '() n start]
-    ;(println vals n)
-    (let [cnt (get cache n)]
-      (if (not (nil? cnt))
-	(list (+ cnt (count vals))
-	      (loop [remain (reverse vals) new-cache cache]
-		(if (nil? remain)
-		  new-cache
-		  (recur (rest remain)
-			 (assoc new-cache (first remain) (+ cnt (count remain)))))))
-	(recur (cons n vals) (iterate-chain n))))))
+    (let [val (sort (math/list-numbers-in n))]
+      (let [cnt (get cache val)]
+	(if (not (nil? cnt))
+	  (list (+ cnt (count vals))
+		(loop [remain (reverse vals) new-cache cache]
+		  (if (nil? remain)
+		    new-cache
+		    (recur (rest remain)
+			   (assoc new-cache (first remain) (+ cnt (count remain)))))))
+	  (recur (cons val vals) (math/sum (map #'math/! val))))))))
 
 (defn problem-seventy-four []
-  (loop [cache {169 3
-		363601 3
-		1454 3
-		169 3
-		871 2
-		45361 2
-		872 2
-		45362 2
-		69 5
-		78 4
-		540 2
-		145 1
-		1 1
-		2 1
-		40585 1} ; gah!
+  (loop [cache {'(1 6 9) 3
+		'(0 1 3 3 6 6) 3
+		'(1 4 4 5) 3
+		'(1 7 8) 2
+		'(1 3 4 5 6) 2
+		'(2 7 8) 2
+		'(2 3 4 5 6) 2
+		'(6 9) 5
+		'(7 8) 4
+		'(0 4 5) 2
+		'(1 4 5) 1
+		'(1) 1
+		'(2) 1
+		'(0 4 5 5 8) 1} ; gah!
 	 n 3
 	 equal-to-sixty 0]
     (if (> n 1000000)
