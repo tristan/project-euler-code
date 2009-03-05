@@ -1,7 +1,5 @@
-(ns math
-    (:load "string-lib"))
-
-(require '(clojure.contrib [math :as contrib-math]))
+(ns libs.math
+  (:require (clojure.contrib [math :as contrib-math])))
 
 (defn list-divisors
   ([n] (list-divisors n
@@ -62,20 +60,21 @@
     1
     (* nbr (! (dec nbr)))))
 
-(defn longdiv [dividend divisor]
-  (loop [result (list) dividend (map char-to-number (seq (str dividend))) remainder 0 pushed-decimal false loop-watcher (list)]
-    (if (and (empty? dividend) (zero? remainder))
-      (if (not (= (first (rest result)) \'))
-	(reverse (cons 0 (cons \' result)))
-	(reverse result))
-      (if (or (= (first dividend) \.) (and (not pushed-decimal) (nil? dividend) (not (zero? remainder))))
-	(recur (cons \. result) (rest dividend) remainder true loop-watcher) ; push the decimal point through
-	(let [divisee (+ (* 10 remainder) (if (empty? (first dividend)) 0 (first dividend)))]
-	  (if (and pushed-decimal (< 0 (count (filter #(= divisee %) loop-watcher))))
-	    (recur (cons (inc (count (take-while (fn [x] (not (= x divisee))) loop-watcher))) (cons \' result)) nil 0 true nil) ; found a loop, done
-	    (let [val (contrib-math/floor (/ divisee divisor)) remain (rem divisee divisor)]
-	      (recur (cons val result) (rest dividend) remain pushed-decimal (if pushed-decimal (cons divisee loop-watcher) loop-watcher))
-	      )))))))
+; TODO: redo cleaner and without dependence on string libraries
+;(defn longdiv [dividend divisor]
+;  (loop [result (list) dividend (map char-to-number (seq (str dividend))) remainder 0 pushed-decimal false loop-watcher (list)]
+;    (if (and (empty? dividend) (zero? remainder))
+;      (if (not (= (first (rest result)) \'))
+;	(reverse (cons 0 (cons \' result)))
+;	(reverse result))
+;      (if (or (= (first dividend) \.) (and (not pushed-decimal) (nil? dividend) (not (zero? remainder))))
+;	(recur (cons \. result) (rest dividend) remainder true loop-watcher) ; push the decimal point through
+;	(let [divisee (+ (* 10 remainder) (if (empty? (first dividend)) 0 (first dividend)))]
+;	  (if (and pushed-decimal (< 0 (count (filter #(= divisee %) loop-watcher))))
+;	    (recur (cons (inc (count (take-while (fn [x] (not (= x divisee))) loop-watcher))) (cons \' result)) nil 0 true nil) ; found a loop, done
+;	    (let [val (contrib-math/floor (/ divisee divisor)) remain (rem divisee divisor)]
+;	      (recur (cons val result) (rest dividend) remain pushed-decimal (if pushed-decimal (cons divisee loop-watcher) loop-watcher))
+;	      )))))))
 
 
 (defn integer-to-binary-helper [nbr base]
@@ -114,13 +113,6 @@
     (if (= a (contrib-math/floor a))
       true
       false)))
-
-(defn list-numbers-in 
-  ([nbr] (list-numbers-in nbr 1))
-  ([nbr tenth]
-     (if (= nbr (rem nbr tenth))
-       '()
-       (concat (list-numbers-in nbr (* tenth 10)) (list (rem (/ (- nbr (rem nbr tenth)) tenth) 10))))))
 
 ; binary GCD algorithm ported from the C code at:
 ; http://en.wikipedia.org/wiki/Binary_GCD_algorithm#Implementation_in_C
