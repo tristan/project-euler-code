@@ -1,23 +1,11 @@
 (ns math
     (:load "string-lib"))
 
-(defn ceil [x]
-  (int (. Math (ceil x))))
-
-(defn floor [x]
-  (int (. Math (floor x))))
-
-(defn sqrt [x]
-  (. Math (sqrt x)))
-
-(defn abs [x]
-  (if (neg? x)
-    (- x)
-    x))
+(require '(clojure.contrib [math :as contrib-math]))
 
 (defn list-divisors
   ([n] (list-divisors n
-		     (filter (fn [x] (zero? (rem n x))) (range 1 (ceil (sqrt (inc n)))))))
+		     (filter (fn [x] (zero? (rem n x))) (range 1 (contrib-math/ceil (contrib-math/sqrt (inc n)))))))
   ([n divisors-up-to-sqrt-n]
      (sort (concat divisors-up-to-sqrt-n 
 		   (filter (fn [x] (not (= (/ n x) x))) ; this filter is to ensure multiple values are not included
@@ -31,7 +19,7 @@
   (if (= pwr 0)
     1
     (if (< pwr 0)
-      (apply #'/ (take (+ 2 (abs pwr)) (iterate #'float (float nbr))))
+      (apply #'/ (take (+ 2 (contrib-math/abs pwr)) (iterate #'float (float nbr))))
       (* nbr (pow nbr (dec pwr))))))
 
 ; uses a loop to prevent stack overflows with large numbers
@@ -40,14 +28,14 @@
     (if (= p 0)
       r
       (if (< p 0)
-	(apply #'/ (take (+ 2 (abs pwr)) (iterate #'float (float nbr))))
+	(apply #'/ (take (+ 2 (contrib-math/abs pwr)) (iterate #'float (float nbr))))
 	(recur n (dec p) (* r n))))))
 
 ; used by fast-pow
 (defn build-equation 
   ([total denominations] (build-equation total denominations '()))
   ([total denominations result] 
-     (if (nil? denominations)
+     (if (empty? denominations)
        result
        (let [fits (/ (- total (rem total (first denominations))) (first denominations))]
 	 (recur 
@@ -76,16 +64,16 @@
 
 (defn longdiv [dividend divisor]
   (loop [result (list) dividend (map char-to-number (seq (str dividend))) remainder 0 pushed-decimal false loop-watcher (list)]
-    (if (and (nil? dividend) (zero? remainder))
+    (if (and (empty? dividend) (zero? remainder))
       (if (not (= (first (rest result)) \'))
 	(reverse (cons 0 (cons \' result)))
 	(reverse result))
       (if (or (= (first dividend) \.) (and (not pushed-decimal) (nil? dividend) (not (zero? remainder))))
 	(recur (cons \. result) (rest dividend) remainder true loop-watcher) ; push the decimal point through
-	(let [divisee (+ (* 10 remainder) (if (nil? (first dividend)) 0 (first dividend)))]
+	(let [divisee (+ (* 10 remainder) (if (empty? (first dividend)) 0 (first dividend)))]
 	  (if (and pushed-decimal (< 0 (count (filter #(= divisee %) loop-watcher))))
 	    (recur (cons (inc (count (take-while (fn [x] (not (= x divisee))) loop-watcher))) (cons \' result)) nil 0 true nil) ; found a loop, done
-	    (let [val (floor (/ divisee divisor)) remain (rem divisee divisor)]
+	    (let [val (contrib-math/floor (/ divisee divisor)) remain (rem divisee divisor)]
 	      (recur (cons val result) (rest dividend) remain pushed-decimal (if pushed-decimal (cons divisee loop-watcher) loop-watcher))
 	      )))))))
 
@@ -93,7 +81,7 @@
 (defn integer-to-binary-helper [nbr base]
   (if (< nbr 1)
     nil
-    (cons (rem nbr base) (integer-to-binary-helper (floor (/ nbr base)) base))))
+    (cons (rem nbr base) (integer-to-binary-helper (contrib-math/floor (/ nbr base)) base))))
 
 (defn integer-to-binary
   ([nbr] (integer-to-binary nbr 2))
@@ -102,7 +90,7 @@
 (defn binary-to-integer
   ([bin] (binary-to-integer (reverse bin) 1))
   ([bin n]
-	(if (nil? bin)
+	(if (empty? bin)
 	    0
 	  (+ (* n (first bin)) (binary-to-integer (rest bin) (* n 2))))))
    
@@ -112,7 +100,7 @@
     false
     (if (< nbr 4)
       true
-      (let [limit (sqrt nbr)]
+      (let [limit (contrib-math/sqrt nbr)]
 	(loop [ctr 2]
 	  (if (< limit ctr)
 	    true
@@ -122,8 +110,8 @@
 
 (defn triangle? [nbr]
   ; from http://en.wikipedia.org/wiki/Triangular_number#Tests_for_triangular_numbers
-  (let [a (/ (- (sqrt (+ (* 8 nbr) 1)) 1) 2)]
-    (if (= a (floor a))
+  (let [a (/ (- (contrib-math/sqrt (+ (* 8 nbr) 1)) 1) 2)]
+    (if (= a (contrib-math/floor a))
       true
       false)))
 
@@ -131,24 +119,15 @@
   ([nbr] (list-numbers-in nbr 1))
   ([nbr tenth]
      (if (= nbr (rem nbr tenth))
-       nil
-       (cons (rem (/ (- nbr (rem nbr tenth)) tenth) 10) (list-numbers-in nbr (* tenth 10))))))
-
-
-(defn round [nbr places]
-  (let [pwr (pow 10.0 places)]
-       (let [v (* nbr pwr)]
-	    (let [a (floor v) b (rem v 1)]
-		 (if (< 0.5 b)
-		     (/ (inc a) pwr)
-		   (/ a pwr))))))
+       '()
+       (concat (list-numbers-in nbr (* tenth 10)) (list (rem (/ (- nbr (rem nbr tenth)) tenth) 10))))))
 
 ; binary GCD algorithm ported from the C code at:
 ; http://en.wikipedia.org/wiki/Binary_GCD_algorithm#Implementation_in_C
 (defn binary-gcd [u v]
   (if (or (zero? u) (zero? v))
     (bit-or u v)
-    (loop [shift 0 u (abs u) v (abs v)]
+    (loop [shift 0 u (contrib-math/abs u) v (contrib-math/abs v)]
       (if (not (zero? (bit-and (bit-or u v) 1)))
 	(loop [u u]
 	  (if (not (zero? (bit-and u 1)))
@@ -172,7 +151,7 @@
 (defn coprime? 
   ([a b] (= 1 (gcd a b)))
   ([a b prime-sieve]
-     (let [lim (min (sqrt a) (sqrt b))]
+     (let [lim (min (contrib-math/sqrt a) (contrib-math/sqrt b))]
        (if (or (zero? (rem a b)) (zero? (rem b a)))
 	 false
 	 (loop [ps prime-sieve]

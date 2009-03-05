@@ -1,3 +1,4 @@
+; SOLVED USING: http://mathworld.wolfram.com/TriangleInterior.html
 (load-file "math.clj")
 
 (defn vector-diff [a b]

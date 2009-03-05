@@ -1,6 +1,4 @@
-(ns primes
-  (:load "math"))
-
+(require '(clojure.contrib [math :as contrib-math]))
 
 (defn sieve-helper [x n li]
   (if (= x n)
@@ -36,9 +34,9 @@
       ;(if (> (count li) (count (take-while #(not (zero? (rem x %))) li)))
       ; custom loop is much faster
       ; speed up gained by only testing up to sqrt of x
-      (if (let [sqrtx (math/sqrt x)]
+      (if (let [sqrtx (contrib-math/sqrt x)]
 	    (loop [tst (rest li)] ; can skip 2 since we already removed that case
-	      (if (or (nil? tst) (> (first tst) sqrtx))
+	      (if (or (empty? tst) (> (first tst) sqrtx))
 		false
 		(if (zero? (rem x (first tst)))
 		  true
@@ -51,9 +49,9 @@
   ([nbr prime-sieve] 
   (if (< nbr 2)
     false
-    (let [sqrtnbr (math/sqrt nbr)]
+    (let [sqrtnbr (contrib-math/sqrt nbr)]
       (loop [ps prime-sieve]
-	(if (nil? ps)
+	(if (empty? ps)
 	  (do
 	    (println "WARNING: EXCEEDED SIZE OF SIEVE")
 	    true)
