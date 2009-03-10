@@ -153,6 +153,28 @@
 	       false
 	       (recur (rest ps)))))))))
 
+(defn get-factors [n]
+  (let [limit (contrib-math/floor (contrib-math/sqrt n))]
+    (loop [n n i 2 factors '()]
+      (if (>= i n)
+	(if (empty? factors)
+	  factors
+	  (distinct (cons n factors)))
+	(if (and (empty? factors) (> i limit))
+	  factors
+	  (if (zero? (rem n i))
+	    (recur (/ n i) i (cons i factors))
+	    (recur n (inc i) factors))))))) ; TODO: speedup by checking for primes after so long
+
+(defn eulers-totient [n]
+  (let [factors (get-factors n)]
+    (if (empty? factors)
+      (dec n)
+      (loop [facts factors r n]
+	(if (empty? facts)
+	  r
+	  (recur (rest facts) (- r (/ r (contrib-math/floor (first facts))))))))))
+
 (defn phi ([n]
   (loop [k 2 c 1]
     (if (> k n)
