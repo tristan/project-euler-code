@@ -25,6 +25,3 @@ def unit_test_faplt():
         print "test failed"
     else:
         print "test passed"
-
-if __name__ == '__main__':
-

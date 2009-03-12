@@ -190,3 +190,6 @@
 		  (if (coprime? n k prime-sieve) (inc c) c)
 		  remaining-primes
 		  ))))))
+
+(defn C [n r]
+  (/ (! n) (* (! r) (! (- n r)))))
