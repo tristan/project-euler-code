@@ -2,7 +2,7 @@
 (require '(libs [math :as math]))
 (load-file "primes.clj")
 
-(time (def prime-sieve (sieve (contrib-math/sqrt 1000000))))
+(time (def prime-sieve (sieve 1000000)))
 
 ; very slow without prime sieve!
 ; $ clojure 0072.clj
@@ -21,20 +21,50 @@
 
 ;(println (time (solve-using-eulers-totient 1000000)))
 
-; slower for the moment.. probably due to map operations rather than array
+; solves in ~38 seconds on average.
 (defn solve-using-sieve [limit]
-  (apply #'+ (keys
-	      (loop [n 2 phis {}]
+  (let [phis
+	(loop [n 2 phis {}]
+	       (if (> n limit)
+		 phis
+		 (recur (inc n)
+			(assoc phis n n))))]
+    (apply #'+ (vals
+		(loop [n 2 phis phis]
+		  (if (> n limit)
+		    phis
+		    (recur
+		     (inc n)
+		     (if (= n (get phis n))
+		       (loop [m n phis phis]
+			 (if (> m limit)
+			   phis
+			   (recur (+ m n) (assoc phis m (- (get phis m) (/ (get phis m) n))))))
+		       phis))))))))
+
+;(println (time (solve-using-sieve 1000000)))
+
+(defn get-lowest-prime-factor [n]
+  (loop [p prime-sieve]
+    (if (zero? (rem n (first p)))
+      (first p)
+      (recur (rest p)))))
+
+(defn solve [limit]
+  (apply #'+ (vals
+	      (loop [n 2 phis {} primes-left prime-sieve]
 		(if (> n limit)
 		  phis
-		  (recur
-		   (inc n)
-		   (if (nil? (get phis n))
-		     (loop [m (+ n n) phis (assoc phis n (dec n))]
-		       (if (> m limit)
-			 phis
-			 (let [old-m (get phis m)]
-			   (let [old-m (if (nil? old-m) m old-m)]
-			     (recur (+ m n) (assoc phis m (- old-m (/ old-m n)))))))))))))))
+		  (if (= n (first primes-left))
+		    (recur (inc n) (assoc phis n (dec n)) (rest primes-left))
+		    (recur (inc n)
+			   (let [p (get-lowest-prime-factor n)]
+			     (let [m (/ n p)]
+			       (assoc phis n (* (get phis m)
+						(if (zero? (rem m p)) p (dec p))))))
+			   primes-left)))))))
 
-(println (time (solve-using-sieve 1000000)))
+; much faster, but only if primes are generated in advance, the extra time to compute primes
+; makes the time saved from the sieve version only a few seconds
+(println (time (solve 1000000)))
+		 
