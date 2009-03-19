@@ -4,11 +4,12 @@
 (load-file "primes.clj")
 
 (def start 2)
-(def limit (math/expt 10 3))
+(def limit (math/sqrt 4268929))
 (println
 (time (def prime-sieve (sieve limit)))
 )
 
+; took over 153 CPU hours to get to the solution
 (defn solve-forward []
   (println (time
 	    (loop [n start r nil p (drop-while #(< % start) prime-sieve)]
@@ -32,17 +33,5 @@
 			 )))
 	      ))))
 
-(defn solve-without-primes [] ; on average slower than with primes
-  (println (time
-	    (loop [n start r nil]
-	      (if (>= n limit)
-		r
-		(recur (inc n)
-		       (let [i (my-math/eulers-totient n)]
-			 (if (and (or (nil? r) (< (/ n i) r)) (= (sort (list-utils/number-to-list i)) (sort (list-utils/number-to-list n))))
-			   (/ n i)
-			   r)
-			 )))))))
-
-(solve-forward)
+;(solve-forward)
 ;(solve-without-primes)

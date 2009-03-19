@@ -1,55 +1,40 @@
+(require '(clojure.contrib [math :as contrib-math]))
+(require '(libs [math :as math]))
 (load-file "primes.clj")
 
-(time
-(do
-  (def sieve (primes/sieve 1000000))
-  (println "done generating" (count sieve) "primes")))
+(time (def prime-sieve (sieve (contrib-math/sqrt 1000000))))
 
-(defn list-prime-factors 
-  [n prime-sieve]
-  (let [lim (math/ceil (/ n 2))]
-    (loop [r '() remaining-primes prime-sieve]
-      (if (> (first remaining-primes) lim)
-	r
-	(recur
-	 (if (zero? (rem n (first remaining-primes)))
-	   (cons (first remaining-primes) r)
-	   r)
-	 (rest remaining-primes))))))
+; very slow without prime sieve!
+; $ clojure 0072.clj
+; "Elapsed time: 1.45513124087E7 msecs"
+; 303963552391
+; with prime sieve quicker, but still too slow
+; $ clojure 0072.clj
+; "Elapsed time: 33.634722 msecs"
+; "Elapsed time: 119379.160201 msecs"
+; 303963552391
+(defn solve-using-eulers-totient [d]
+  (loop [i 2 sum 0]
+    (if (<= i d)
+      (recur (inc i) (+ sum (math/eulers-totient i prime-sieve)))
+      sum)))
 
-(defn phi [n]
-  (let [r (* n (apply #'* (map #(- 1 (/ 1 %)) (list-prime-factors n sieve))))]
-    (if (= r n)
-      (dec r)
-      r)))
+;(println (time (solve-using-eulers-totient 1000000)))
 
-(defn reduce-fraction [denominator]
-  (loop [n (dec denominator) cnt 0]
-    (if (< n 1)
-      cnt
-      (recur (dec n)
-	     (if (= 1 (math/gcd n denominator))
-	       (inc cnt)
-	       cnt)))))
+; slower for the moment.. probably due to map operations rather than array
+(defn solve-using-sieve [limit]
+  (apply #'+ (keys
+	      (loop [n 2 phis {}]
+		(if (> n limit)
+		  phis
+		  (recur
+		   (inc n)
+		   (if (nil? (get phis n))
+		     (loop [m (+ n n) phis (assoc phis n (dec n))]
+		       (if (> m limit)
+			 phis
+			 (let [old-m (get phis m)]
+			   (let [old-m (if (nil? old-m) m old-m)]
+			     (recur (+ m n) (assoc phis m (- old-m (/ old-m n)))))))))))))))
 
-;(println (time (phi 1000000)))
-;(println (time (reduce-fraction 1000000)))
-; TODO: optimize optimise slow
-
-;;; FAILED!!
-
-(defn count-reduced [d]
-  (loop [n (dec d) cnt 0]
-    (if (< n 2)
-      (inc cnt)
-      (recur (dec n) (if (zero? (rem d n)) cnt (inc cnt))))))
-
-(println (time
-(loop [n 1000000 cnt 0 remaining-primes (reverse sieve)]
-  (println n cnt)
-  (if (> 2 n)
-    cnt
-    (if (= n (first remaining-primes))
-      (recur (dec n) (+ cnt (count (rest remaining-primes))) (rest remaining-primes))
-      (recur (dec n) (+ cnt (phi n)) remaining-primes))))
-))
+(println (time (solve-using-sieve 1000000)))

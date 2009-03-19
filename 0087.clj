@@ -8,15 +8,9 @@
 
 (def limit 50000000)
 (def sqrtlimit (math/sqrt limit))
-(println
- sqrtlimit
-)
-(def primes (sieve (math/floor sqrtlimit)))
-(println
- primes
-)
+(time (def primes (sieve (math/floor sqrtlimit))))
 
-(println (time
+(defn soln []
 (loop [c primes n #{}]
   (let [r (loop [b primes n n]
 	    (let [r (loop [a primes n n]
@@ -42,4 +36,6 @@
 				  limit))
       (count r)
       (recur (rest c) r))))
-))
+)
+
+(println (time (soln)))

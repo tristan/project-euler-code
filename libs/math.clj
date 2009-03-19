@@ -166,14 +166,34 @@
 	    (recur (/ n i) i (cons i factors))
 	    (recur n (inc i) factors))))))) ; TODO: speedup by checking for primes after so long
 
-(defn eulers-totient [n]
-  (let [factors (get-factors n)]
-    (if (empty? factors)
-      (dec n)
-      (loop [facts factors r n]
-	(if (empty? facts)
-	  r
-	  (recur (rest facts) (- r (/ r (contrib-math/floor (first facts))))))))))
+(defn eulers-totient 
+  ([n]
+     (let [factors (get-factors n)]
+       (if (empty? factors)
+	 (dec n)
+	 (loop [facts factors r n]
+	   (if (empty? facts)
+	     r
+	     (recur (rest facts) (- r (/ r (contrib-math/floor (first facts))))))))))
+  ([n prime-sieve] ; can be done much faster if the prime list is available
+     (let [lim (contrib-math/sqrt n)]
+       (loop [phi n n n primes (take-while #(<= % lim) prime-sieve)]
+	 (if (and (not (empty? primes)) (<= (* (first primes) (first primes)) n))
+	   (if (zero? (rem n (first primes)))
+	     (recur
+	      (- phi (/ phi (first primes)))
+	      (loop [n n]
+		(if (zero? (rem n (first primes)))
+		  (recur (/ n (first primes)))
+		  n))
+	      (rest primes))
+	     (recur
+	      phi
+	      n
+	      (rest primes)))
+	   (if (> n 1)
+	     (- phi (/ phi n))
+	     phi))))))
 
 (defn phi ([n]
   (loop [k 2 c 1]
