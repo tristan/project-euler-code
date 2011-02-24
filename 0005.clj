@@ -1,27 +1,20 @@
-(defn sum [lst]
-  (apply #'* lst))
 
-(defn is-x-divisible-by-all-numbers-in-the-list? [x lst]
-  (loop [ilst lst]
-    (if (= (count ilst) 0)
-      true
-      (if (> (rem x (first ilst)) 0)
-	false
-	(recur (rest ilst))))))
+(defn problem-five 
+  ([] (problem-five 20))
+  ([n] (problem-five n (* n n)))
+  ([n val] ; TODO: try to make this faster
+     (if (> (dec n) 
+	    (count (take-while #(zero? %) (map #(rem val %) (range n 1 -1)))))
+       (recur n (+ n val))
+       val))
+  ([#^Integer n #^Integer val a] ; this is much faster. but not as lispy
+     (if (loop [#^Integer n n]
+	   (if (> 1 n)
+	     true
+	     (if (zero? (rem val n))
+	       (recur (dec n))
+	       false)))
+       val
+       (recur n (+ n val) 1))))
 
-(defn find-smallest-number-evenly-divisible-by-all-numbers-from-one-to [x]
-  (let [all-nums (take x (iterate (fn [z] (inc z)) 1))]
-     (loop [current (* x x)]
-       (if (is-x-divisible-by-all-numbers-in-the-list? current all-nums)
-	 current
-	 (recur (+ current x))))))
-
-(defn problem-five-example []
-  (= (find-smallest-number-evenly-divisible-by-all-numbers-from-one-to 10) 2520))
-
-;(println (problem-five-example))
-
-(defn problem-five []
-  (println (find-smallest-number-evenly-divisible-by-all-numbers-from-one-to 20)))
-
-(problem-five)
+(println (problem-five))

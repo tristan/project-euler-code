@@ -18,6 +18,7 @@ if __name__ == '__main__':
     """test isprime"""
     if not isprime(3) or isprime(4) or not isprime(29) or isprime(30):
         raise Exception('isprime broken')
+    # this is not a particularily exhaustive test
 
     """test genprimefactors"""
     primefactors = [i for i in genprimefactors(13195)]
@@ -25,10 +26,21 @@ if __name__ == '__main__':
         print primefactors
         raise Exception('genprimefactors did not work')
 
-    print 'All tests passed'
+#    print 'All tests passed'
 
-    largestprime = 1
-    for i in genprimefactors(600851475143):
-        print i
-        largestprime = i
-    print largestprime
+#    largestprime = 1
+#    for i in genprimefactors(600851475143):
+#        print i
+#        largestprime = i
+#    print largestprime
+
+    number = 600851475143
+    divisor = 2;
+    while (number > 1):
+        if (0 == (number % divisor)):
+            number /= divisor
+        else:
+            divisor += 1
+    print divisor
+        
+    
