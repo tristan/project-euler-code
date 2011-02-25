@@ -1,18 +1,18 @@
 public class _0005 {
+    
+    public static long gcd(long a, long b) {
+	if (b == 0)
+	    return a;
+	return gcd(b, a % b);
+    }
+    public static long lcm(long a, long b) {
+	return (a * b) / gcd(a, b);
+    }
+
     public static void main(String[] argv) {
-	int n = 20;
-	int val = n*n-n;
-	int i;
-	boolean t = false;
-	while(!t) {
-	    t = true;
-	    val+=n;
-	    for (i = n; i > 1; --i) {
-		if (val % i != 0) {
-		    t = false;
-		    break;
-		}
-	    }
+	long val = 1;
+	for (int i = 2; i < 21; i++) {
+	    val = lcm(val, i);
 	}
 	System.out.println(val);
     }

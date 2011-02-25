@@ -17,4 +17,13 @@
 	(- (* sum sum) sum-of-squares)
 	(recur (rest l) (+ sum-of-squares (* (first l) (first l))) (+ sum (first l)))))))
 
-(println (problem-six))
+(defn problem-six []
+  (let [[sos sum] (reduce #(map + %1 %2)
+			  (map #(vector (* % %) %) (range 1 101)))]
+    (- (* sum sum) sos)))
+
+(defn problem-six []
+  (- (let [sum (reduce + (range 1 101))] (* sum sum))
+     (reduce #(+ %1 (* %2 %2)) (range 1 101))))
+
+(println (time (problem-six)))
