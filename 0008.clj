@@ -1,6 +1,7 @@
 (defn string-to-integer [s]
   (. Integer (parseInt s)))
 
+; NOTE: this is the ugliest but quickets solution so far
 (defn find-greatest-product-of-consecutive-digets-in-string [string digets]
   (loop [result 0 iter 0]
     (if (> iter (- (count string) digets))
@@ -10,10 +11,8 @@
 				      lst
 				      (recur (cons (string-to-integer (subs string (+ iter point) (+ iter (inc point)))) lst) (dec point)))))) (inc iter)))))
 
-
-(defn problem-eight []
-  (find-greatest-product-of-consecutive-digets-in-string
-   (.replace "73167176531330624919225119674426574742355349194934
+(def problem-eight-data
+  (.replace "73167176531330624919225119674426574742355349194934
 96983520312774506326239578318016984801869478851843
 85861560789112949495459501737958331952853208805511
 12540698747158523863050715693290963295227443043557
@@ -32,6 +31,38 @@
 07198403850962455444362981230987879927244284909188
 84580156166097919133875499200524063689912560717606
 05886116467109405077541002256983155200055935729725
-71636269561882670428252483600823257530420752963450" "\n" "") 5))
+71636269561882670428252483600823257530420752963450" "\n" ""))
 
-(println (problem-eight))
+(defn problem-eight1 []
+  (reduce max (map (fn [i] (apply * (map (fn [j] (Character/getNumericValue j)) i))) (partition 5 1 problem-eight-data))))
+
+(defn problem-eight2 [] ; it would seem that (map (map ...)) is a bad computation for speed
+  (reduce max (map #(reduce * %) (map (fn [v] (map #(Integer/parseInt (str %)) v)) (partition 5 1 problem-eight-data)))))
+
+(defn problem-eight3 []
+  (let [data (map #(Character/getNumericValue %) problem-eight-data)]
+    (reduce max (map (fn [i] (apply * i)) (partition 5 1 data)))))
+
+(defn problem-eight4 []
+  (let [data (map #(Character/getNumericValue %) problem-eight-data)]
+    (reduce max (map (fn [i] (reduce * i)) (partition 5 1 data)))))
+
+(defn problem-eight5 []
+  (let [data (map #(Character/getNumericValue %) (seq problem-eight-data))]
+    (reduce max (map (fn [i] (reduce * i)) (partition 5 1 data)))))
+
+(defn problem-eight []
+  (let [data (map (fn [i] (Character/getNumericValue i)) (seq problem-eight-data))]
+    (reduce max (map (fn [i] (reduce * i)) (partition 5 1 data)))))
+
+
+;(println "fgpocdis" (time (find-greatest-product-of-consecutive-digets-in-string problem-eight-data 5)))
+;(println "p81" (time (problem-eight1)))
+(println "p82" (time (problem-eight2)))
+;(println "p83" (time (problem-eight3)))
+;(println "p84" (time (problem-eight4)))
+;(println "p8" (time (problem-eight)))
+;(println "p85" (time (problem-eight5)))
+
+; everything past p8-2 is on average as fast as each other,
+; however the original non-lispy version still wins
