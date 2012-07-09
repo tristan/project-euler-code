@@ -2,6 +2,7 @@
 #include <vector>
 #include <algorithm>
 #include <sstream>
+#include <iomanip>
 
 class bigint {
 public:
@@ -58,7 +59,7 @@ public:
     return bigint(std::move(res), false);
   }
 
-
+  // TODO: fix this, it's really broken!
   bigint operator*(int rhs) {
     int overflow = 0;
     std::vector<int> res;
@@ -87,10 +88,14 @@ public:
 
   std::string to_string() {
     std::stringstream ss;
+    ss << std::setfill('0');
     std::for_each(num.rbegin(), num.rend(), [&ss](int i) {
-      ss << i;
+        ss << std::setw(9) << i;
       });
-    return ss.str();
+    std::string r = ss.str();
+    int i = 0;
+    while (r[i] == '0') i++;
+    return r.substr(i);
   }
 
 private:
