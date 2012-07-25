@@ -9,6 +9,8 @@ private:
 public:
   prime_sieve() {
      sieve.fill(true);
+     sieve[0] = false;
+     sieve[1] = false;
      int i = 2;
      while (i < smax - 1) {
        int j = i+i;
