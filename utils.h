@@ -7,3 +7,10 @@ std::ostream & operator<<(std::ostream& o, const std::vector<int> &v) {
   }
   return o;
 }
+
+std::ostream & operator<<(std::ostream& o, const std::array<int, 9> &v) {
+  for (int x: v) {
+    o << x << " ";
+  }
+  return o;
+}
