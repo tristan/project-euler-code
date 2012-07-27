@@ -1,10 +1,8 @@
-(load-file "math.clj")
-
 (defn pentagon [n]
   (/ (* n (- (* 3 n) 1)) 2))
 
 (defn pentagonal? [n]
-  (zero? (rem (/ (inc (math/sqrt (inc (* 24 n)))) 6) 1)))
+  (zero? (rem (/ (inc (Math/sqrt (inc (* 24 n)))) 6) 1)))
 
 (defn solver [n m]
   (if (= n m)
@@ -19,3 +17,5 @@
 
 (defn problem-forty-four []
   (solver 1 1))
+
+(println (time (problem-forty-four)))

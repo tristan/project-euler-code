@@ -1,6 +1,6 @@
 CXXFLAGS=-std=c++11 -O3 -g3
 
-PROB=0041
+PROB=0048
 
 prob:
 	${CXX} ${CXXFLAGS} benchmark.cpp ${PROB}.cpp -o ${PROB}
