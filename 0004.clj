@@ -26,7 +26,7 @@
 
 ;(unit-test-palindromic?)
 
-(defn problem-four []
+(defn problem-four1 []
   (loop [x 100 y 100 largest 0]
     (if (> x 999)
       largest
@@ -37,7 +37,7 @@
 	    (recur x (inc y) (max num largest))
 	    (recur x (inc y) largest)))))))
 
-(defn problem-four []
+(defn problem-four2 []
   (loop [x 999 y 999 largest 0]
     (if (< y 100)
       (recur (dec x) 999 largest)
@@ -50,4 +50,4 @@
 	    (recur x (dec y) (max num largest))
 	    (recur x (dec y) largest)))))))
 
-(println (problem-four))
+(def solutions (list problem-four1 problem-four2))

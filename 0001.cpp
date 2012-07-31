@@ -1,6 +1,8 @@
 #include <iostream>
+#include <vector>
+#include <functional>
 
-int main() {
+void fn0() {
   int sum = 0;
   for (int i = 0; i < 1000; i++) {
     if (i % 5 == 0 || i % 3 == 0) {
@@ -8,5 +10,6 @@ int main() {
     }
   }
   std::cout << sum << std::endl;
-  return 0;
 }
+
+std::vector<std::function<void()>> progs = { fn0 };

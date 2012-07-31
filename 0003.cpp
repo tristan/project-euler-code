@@ -1,4 +1,7 @@
 #include <iostream>
+#include <vector>
+#include <functional>
+#include <iostream>
 
 int fact(long int num) {
   int divisor = 2;
@@ -12,7 +15,9 @@ int fact(long int num) {
   return divisor;
 }
 
-int main() {
+void fn0() {
   //std::cout << fact(13195) << std::endl;
   std::cout << fact(600851475143) << std::endl;
 }
+
+std::vector<std::function<void()>> progs = { fn0 };

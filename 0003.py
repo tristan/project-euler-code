@@ -14,7 +14,7 @@ def genprimefactors(n):
                 yield i
         i += 1
 
-if __name__ == '__main__':
+def test():
     """test isprime"""
     if not isprime(3) or isprime(4) or not isprime(29) or isprime(30):
         raise Exception('isprime broken')
@@ -34,6 +34,7 @@ if __name__ == '__main__':
 #        largestprime = i
 #    print largestprime
 
+def fn0():
     number = 600851475143
     divisor = 2;
     while (number > 1):
@@ -41,6 +42,6 @@ if __name__ == '__main__':
             number /= divisor
         else:
             divisor += 1
-    print divisor
+    return divisor
         
-    
+solutions = [fn0]

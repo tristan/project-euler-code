@@ -8,7 +8,7 @@
 	 (recur num (inc div)))))
 )
 
-(defn test []
+(defn test-solution []
   (= (problem-three 13195) 29))
 
-(println (problem-three 600851475143))
+(def solutions (list (fn [] (problem-three 600851475143))))

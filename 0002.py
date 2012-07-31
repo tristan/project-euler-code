@@ -6,6 +6,8 @@ def fibgen(n):
         n1 = n0 + n1
         n0 = tmp
 
-if __name__ == '__main__':
-    print sum(i for i in fibgen(4000000) if i % 2 == 0)
+def fn0():
+    return sum(i for i in fibgen(4000000) if i % 2 == 0)
+
+solutions = [fn0]
         
