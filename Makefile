@@ -15,8 +15,9 @@ py:
 	@rm euler__.py
 
 java:
-	#	@cp ${PROB}.java _${PROB}.java
+	@cp ${PROB}.java _${PROB}.java
 	@javac Benchmark.java _${PROB}.java
+	@rm _${PROB}.java
 	@java Benchmark ${PROB}
 
 clean:
