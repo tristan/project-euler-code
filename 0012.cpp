@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <functional>
 
 int count_factors(int n) {
   int r = 0;
@@ -15,7 +16,7 @@ int count_factors(int n) {
   return r;
 }
 
-int main() {
+void fn0() {
   int sum = 0;
   for (int i = 1; ; i++) {
     sum += i;
@@ -23,7 +24,9 @@ int main() {
     //std::cout << sum << ": " << s << std::endl;
     if (s > 500) {
       std::cout << sum << std::endl;
-      return 0;
+      return;
     }
   }
 }
+
+std::vector<std::function<void()>> progs = { fn0 };

@@ -2,9 +2,10 @@
 #include <fstream>
 #include <vector>
 #include <algorithm>
+#include <functional>
 #include "bigint.h"
 
-int main() {
+void fn0() {
   bigint sum("0");
   std::fstream in("0013.txt");
   std::string s;
@@ -14,5 +15,6 @@ int main() {
     sum = sum + bigint(s);
   }
   sum.print();
-  return 0;
 }
+
+std::vector<std::function<void()>> progs = { fn0 };

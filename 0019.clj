@@ -1,6 +1,3 @@
-
-
-
 (defn leap-year? [year]
   (if (zero? (rem year 4))
     (if (zero? (rem year 100))
@@ -33,4 +30,4 @@
 	       (rem (+ week-day (days-in-month year month)) 7)
 	       sum)))))
 
-(println (problem-nineteen))
+(def solutions (list problem-nineteen))

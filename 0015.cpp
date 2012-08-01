@@ -1,6 +1,8 @@
 #include <iostream>
 #include <array>
 #include <algorithm>
+#include <vector>
+#include <functional>
 
 template <int size>
 void print_grid(std::array<std::array<long int, size>, size> grid) {
@@ -34,6 +36,4 @@ void run() {
   std::cout << grid[0][0] << std::endl;
 }
 
-int main() {
-  run<20>();
-}
+std::vector<std::function<void()>> progs = { run<20> };

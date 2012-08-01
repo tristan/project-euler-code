@@ -1,8 +1,9 @@
 #include <iostream>
 #include <array>
 #include <vector>
+#include <functional>
 
-int main() {
+void fn0() {
   std::array<long int, 1000000> cache;
   cache.fill(0);
   cache[1] = 1;
@@ -33,5 +34,6 @@ int main() {
     }
   }
   std::cout << maxstart << std::endl;
-  return 0;
 }
+
+std::vector<std::function<void()>> progs = { fn0 };

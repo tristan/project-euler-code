@@ -58,7 +58,7 @@
 
 ;(println "fgpocdis" (time (find-greatest-product-of-consecutive-digets-in-string problem-eight-data 5)))
 ;(println "p81" (time (problem-eight1)))
-(println "p82" (time (problem-eight2)))
+;(println "p82" (time (problem-eight2)))
 ;(println "p83" (time (problem-eight3)))
 ;(println "p84" (time (problem-eight4)))
 ;(println "p8" (time (problem-eight)))
@@ -66,3 +66,5 @@
 
 ; everything past p8-2 is on average as fast as each other,
 ; however the original non-lispy version still wins
+
+(def solutions (list problem-eight2))

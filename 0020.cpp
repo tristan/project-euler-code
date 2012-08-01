@@ -14,7 +14,7 @@ void fn1() {
     //std::cout << c;
     sum += (c - 48);
   }
-  std::cout << std::endl << sum << std::endl;
+  std::cout << "(WRONG) " << sum << std::endl;
 }
 
 void fn2() {

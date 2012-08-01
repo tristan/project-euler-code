@@ -1,6 +1,8 @@
 public class _0007 {
-    public static void main(String[] argv) {
-	PrimeGenerator pg = new PrimeGenerator();
-	System.out.println(pg.get(10000));
+    public Object fn0() {
+        PrimeGenerator pg = new PrimeGenerator();
+        return pg.get(10000);
     }
+
+    public String[] solutions = new String[]{ "fn0" };
 }

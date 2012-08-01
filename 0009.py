@@ -9,12 +9,12 @@ def brute_force():
             a += 1
         c = math.sqrt((a ** 2) + (b ** 2))
         if a + b + c == 1000:
-            print a, '+', b, '+', c
+            print a, '*', b, '*', c
             return a * b * c
         b += 1
 
 
-if __name__ == '__main__':
+def fn0():
     '''
 
     a + b + c = 1000
@@ -23,4 +23,7 @@ if __name__ == '__main__':
 
     '''
 
-    print brute_force()
+    return brute_force()
+
+
+solutions = [brute_force]

@@ -2,6 +2,7 @@
 #include <array>
 #include <vector>
 #include <future>
+#include <functional>
 
 template <int smax>
 std::vector<int> genprimes() {
@@ -39,8 +40,9 @@ std::vector<int> genprimes() {
   return primes;
 }
 
-int main() {
+void fn0() {
   auto primes = genprimes<1000000>();
   std::cout << primes[10000] << std::endl;
-  return 0;
 }
+
+std::vector<std::function<void()>> progs = { fn0 };

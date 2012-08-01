@@ -20,12 +20,12 @@ temp = """75
 t = map(lambda x: map(int, x.split()), temp.split('\n'))
 
 def maxsum(sum, line):
-    print 'sum:', sum
-    print 'line:', line
+    #print 'sum:', sum
+    #print 'line:', line
     a = map(lambda x: x[0]+x[1], zip(sum, line))
-    print 'a:', a
+    #print 'a:', a
     b = map(lambda x: x[0]+x[1], zip(sum[1:], line))
-    print 'b:', b
+    #print 'b:', b
     return map(max, zip(a, b))
 
-print reduce(maxsum, t[::-1]) 
+solutions = [lambda : reduce(maxsum, t[::-1])[0]]

@@ -1,8 +1,10 @@
 #include <iostream>
 #include <array>
+#include <vector>
+#include <functional>
 #include "bigint.h"
 
-int main1() {
+void fn0() {
   std::array<int, 512> num = { 0 };
   int d = 1;
   num[1] = 1;
@@ -25,8 +27,7 @@ int main1() {
   std::cout << sum << std::endl;
 }
 
-// using bigint
-int main() {
+void fn1() {
   bigint x("2");
   for (int i = 0; i < 999; i++) {
     x = x * 2;
@@ -38,3 +39,5 @@ int main() {
   }
   std::cout << sum << std::endl;
 }
+
+std::vector<std::function<void()>> progs = { fn0, fn1 };

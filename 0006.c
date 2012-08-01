@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-void main() {
+void fn0() {
   int i;
   long int sumofsq = 0;
   long int sum = 0;
@@ -10,3 +10,5 @@ void main() {
   }
   printf("%d\n", sum * sum - sumofsq);
 }
+
+void (*solutions[])() = { fn0, NULL };

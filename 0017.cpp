@@ -1,7 +1,9 @@
 #include <iostream>
 #include <array>
+#include <vector>
+#include <functional>
 
-int main() {
+void fn0() {
   std::array<int, 10> ones = {
     // zero, one, ..., nine
     0, 3, 3, 5, 4, 4, 3, 5, 5, 4
@@ -23,7 +25,7 @@ int main() {
     for (int t = 0; t <= 9; t++) {
       for (int o = 0; o <= 9; o++) {
         int s = 0;
-        std::cout << h << t << o << ": ";
+        //std::cout << h << t << o << ": ";
         if (h > 0) {
           
           s += ones[h] + hundred;
@@ -38,7 +40,7 @@ int main() {
         } else {
           s += ones[o];
         }
-        std::cout << s << std::endl;
+        //std::cout << s << std::endl;
         sum += s;
       }
     }
@@ -46,3 +48,5 @@ int main() {
   sum += ones[1] + thousand;
   std::cout << sum << std::endl;
 }
+
+std::vector<std::function<void()>> progs = { fn0 };

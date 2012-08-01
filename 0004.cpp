@@ -1,7 +1,9 @@
 #include <iostream>
+#include <vector>
+#include <functional>
 #include <string>
 
-int main() {
+void fn0() {
   int max = 0;
   for (int i = 100; i < 1000; i++) {
     for (int j = 100; j < 1000; j++) {
@@ -18,5 +20,6 @@ int main() {
     }
   }
   std::cout << max << std::endl;
-  return 0;
 }
+
+std::vector<std::function<void()>> progs = { fn0 };

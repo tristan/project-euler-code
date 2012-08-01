@@ -1,5 +1,3 @@
-
-
 memory = {1:1}
 
 def get_number_of_sequences(start):
@@ -26,5 +24,7 @@ def find_largest_sequence_under(limit):
             return i
     raise Exception('something went horribly wrong!')
 
-if __name__ == '__main__':
-    print find_largest_sequence_under(1000000)
+def fn0():
+    return find_largest_sequence_under(1000000)
+
+solutions = [fn0]

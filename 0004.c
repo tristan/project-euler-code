@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-void main() {
+void fn0() {
   int i;
   int j;
   int val;
@@ -10,13 +10,16 @@ void main() {
     for (j = 999; j >= i; --j) {
       val = i*j;
       if (val < 1000000 && val > max) {
-	sprintf(valasstr, "%d", val);
-	if (valasstr[0] == valasstr[5] &&
-	    valasstr[1] == valasstr[4] &&
-	    valasstr[2] == valasstr[3]) {
-	  max = val;
-	}
+        sprintf(valasstr, "%d", val);
+        if (valasstr[0] == valasstr[5] &&
+            valasstr[1] == valasstr[4] &&
+            valasstr[2] == valasstr[3]) {
+          max = val;
+        }
+      }
     }
   }
   printf("%d\n", max);
 }
+
+void (*solutions[])() = { fn0, NULL };

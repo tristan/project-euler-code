@@ -4,7 +4,7 @@ def find_greatest_product_of_consecutive_digets_in_string(dstring, digets):
         largest_product = max(largest_product, reduce(lambda x, y: x*y, [int(k) for k in dstring[i:i+digets]]))
     return largest_product
 
-if __name__ == '__main__':
+def fn0():
     dstring = """73167176531330624919225119674426574742355349194934
 96983520312774506326239578318016984801869478851843
 85861560789112949495459501737958331952853208805511
@@ -25,4 +25,6 @@ if __name__ == '__main__':
 84580156166097919133875499200524063689912560717606
 05886116467109405077541002256983155200055935729725
 71636269561882670428252483600823257530420752963450""".replace('\n', '').replace(' ', '')
-    print find_greatest_product_of_consecutive_digets_in_string(dstring, 5)
+    return find_greatest_product_of_consecutive_digets_in_string(dstring, 5)
+
+solutions = [fn0]

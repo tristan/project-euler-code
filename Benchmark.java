@@ -2,6 +2,7 @@ import java.lang.reflect.Method;
 
 public class Benchmark {
     public static void main(String[] args) throws Exception{
+        System.out.println("==== JAVA ====");
         Object o = Benchmark.class.forName("_" + args[0]).newInstance();
         for (String soln: (String[])o.getClass().getField("solutions").get(o)) {
             Method m = o.getClass().getMethod(soln);
@@ -11,7 +12,7 @@ public class Benchmark {
             if (res == null)
                 return;
             System.out.println(res);
-            System.out.println("Runtime: " + (et - st) + "ms");
+            System.out.println("Runtime: " + (et - st) + " ms");
         }
     }
 }

@@ -4,7 +4,7 @@
 
 void fn0() {
   int sum = 0;
-  for (int a = 1, b = 2; b <= 400000000;) {
+  for (int a = 1, b = 2; b <= 4000000;) {
     if (b % 2 == 0) {
       sum += b;
     }

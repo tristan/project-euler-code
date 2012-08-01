@@ -8,7 +8,7 @@ def ispalindromic(n):
             return False
     return True
 
-if __name__ == '__main__':
+def fn0():
     largestp = 0
     for i in xrange(100, 1000):
         for j in xrange(100, 1000):
@@ -16,4 +16,6 @@ if __name__ == '__main__':
             if ispalindromic(r) and r > largestp:
                 #print r
                 largestp = r
-    print 'Largest palindromic:', largestp
+    return largestp
+
+solutions = [fn0]

@@ -1,24 +1,20 @@
 import math
 
-def number_of_factors(number, limit=0):
+def number_of_factors(number):
     found = 0
-    for i in range(2, math.sqrt(number)):
+    for i in range(2, int(math.sqrt(number))):
         if number % i == 0:
-            found += 1
-        if limit != 0 and found * 2 >= limit:
-            return True
-    if limit != 0:
-        return False
-    return found * 2
+            found += 2
+    return found
 
 def problem_twelve():
+    s = 0
     n = 1
     while True:
-        tri = (n * (n + 1)) / 2
-        if number_of_factors(tri, 500):
+        s += n
+        if number_of_factors(s) > 500:
             break
         n += 1
-    print tri
+    return s
 
-if __name__ == '__main__':
-    problem_twelve()
+solutions = [problem_twelve]

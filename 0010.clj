@@ -1,9 +1,6 @@
-(load-file "sieveoferatosthenes.clj")
+(load "primes")
 
 (defn problem-ten [limit]
-  (loop [primes (vector 2 3 5 7) lim (+ limit 100)]
-    (if (< (last primes) limit)
-      (recur (expand-vector-of-primes primes lim) (+ lim 100))
-      (apply #'+ (take-while (fn [x] (< x limit)) primes)))))
+  (apply +' (take-while (fn [x] (< x limit)) (hashtable-primes))))
 
-(println (problem-ten 2000000))
+(def solutions (list (fn [] (problem-ten 2000000))))

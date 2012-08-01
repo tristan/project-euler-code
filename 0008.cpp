@@ -2,8 +2,9 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <functional>
 
-int main() {
+void fn0() {
 
   std::fstream in("0008.txt");
   std::vector<int> nums;
@@ -27,6 +28,6 @@ int main() {
   }
 
   std::cout << max << std::endl;
-  
-  return 0;
 }
+
+std::vector<std::function<void()>> progs = { fn0 };

@@ -2,8 +2,9 @@
 #include <vector>
 #include <fstream>
 #include <algorithm>
+#include <functional>
 
-int main() {
+void fn0() {
   std::vector<std::vector<int>> triangle;
 
   // read in the triangle
@@ -15,10 +16,10 @@ int main() {
       in >> n;
       if (in.eof()) break;
       x.push_back(n);
-      std::cout << n << " ";
+      //std::cout << n << " ";
     }
     if (in.eof()) break;
-    std::cout << std::endl;
+    //std::cout << std::endl;
     triangle.push_back(x);
   }
 
@@ -29,11 +30,14 @@ int main() {
     std::vector<int> tmp;
     for (int i = 0; i < (*x).size(); i++) {
       int m = std::max((*x)[i] + sum[i], (*x)[i] + sum[i+1]);
-      std::cout << m << " ";
+      //std::cout << m << " ";
       tmp.push_back(m);
     }
-    std::cout << std::endl;
+    //std::cout << std::endl;
     sum = std::move(tmp);
   }
   std::cout << sum[0] << std::endl;
 }
+
+std::vector<std::function<void()>> progs = { fn0 };
+

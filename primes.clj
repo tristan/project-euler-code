@@ -1,5 +1,5 @@
-(require '(clojure.contrib [math :as contrib-math]))
-
+(comment
+  
 (defn sieve-helper [x n li]
   (if (= x n)
     li
@@ -65,5 +65,33 @@
 (defn quick-prime?
   ([nbr] (prime? nbr (sieve 100000)))
   ([nbr prime-sieve] 
-  (= nbr (last (take-while #(>= nbr %) prime-sieve)))))
-      
+     (= nbr (last (take-while #(>= nbr %) prime-sieve)))))
+
+)
+
+(defn wheel-primes
+  []
+  (let [next-prime
+        (fn next-prime [x xs [f & r]]
+          (if (some #(zero? (rem x %))
+                    (take-while #(<= (* % %) x) xs))
+            (recur (+ x f) xs r)
+            (cons x (lazy-seq (next-prime (+ x f) (conj xs x) r)))))
+        wheel (cycle [2 4 2 4 6 2 6 4 2 4 6 6 2  6 4  2
+                      6 4 6 8 4 2 4 2 4 8 6 4 6  2 4  6
+                      2 6 6 4 2 4 6 2 6 4 2 4 2 10 2 10])]
+    (concat [2 3 5 7] (lazy-seq (next-prime 11 [] wheel)))))
+
+(defn hashtable-primes
+  []
+  (letfn [(next-composite [x step sieve]
+                          (if (sieve x)
+                            (recur (+ x step) step sieve)
+                            (assoc sieve x step)))
+          (next-prime [x sieve]
+                      (let [step (sieve x)]
+                        (if (sieve x)
+                          (recur (+ x 2) (next-composite (+ x step) step (dissoc sieve x)))
+                          (cons x (lazy-seq (next-prime (+ x 2) (assoc sieve (* x x) (* x 2))))))))]
+    (cons 2 (lazy-seq (next-prime 3 {})))))
+          

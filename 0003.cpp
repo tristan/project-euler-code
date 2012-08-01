@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
 #include <functional>
-#include <iostream>
 
 int fact(long int num) {
   int divisor = 2;

@@ -1,4 +1,9 @@
-(use '[clojure.contrib.lazy-seqs :only (primes)])
+(load "primes")
 
-; clojure contrib making this one a piece of cake!
-(println (first (drop 10000 primes))) ; 104743
+(defn fn0 []
+  (first (drop 10000 (wheel-primes))))
+
+(defn fn1 []
+  (first (drop 10000 (hashtable-primes))))
+
+(def solutions (list fn0 fn1))

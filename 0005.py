@@ -6,5 +6,7 @@ def gcd(a,b):
 def lcm(a,b):
     return (a * b) / gcd(a,b)
 
-if __name__ == '__main__':
-    print reduce(lcm, range(1,21))
+def fn0():
+    return reduce(lcm, range(1,21))
+
+solutions = [fn0]

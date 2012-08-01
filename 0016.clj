@@ -1,1 +1,1 @@
-(println (apply + (map #(- (int %) 48) (str (reduce * (repeat 1000 2N))))))
+(def solutions (list (fn [] (apply + (map #(- (int %) 48) (str (reduce *' (repeat 1000 2))))))))

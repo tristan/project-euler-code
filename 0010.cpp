@@ -2,6 +2,7 @@
 #include <array>
 #include <vector>
 #include <future>
+#include <functional>
 
 template <long int smax>
 long int sumprimes() {
@@ -39,7 +40,8 @@ long int sumprimes() {
   return sum;
 }
 
-int main() {
+void fn0() {
   std::cout << sumprimes<2000000>() << std::endl;
-  return 0;
 }
+
+std::vector<std::function<void()>> progs = { fn0 };

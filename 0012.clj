@@ -1,5 +1,3 @@
-(load-file "math.clj")
-
 (defn istriangle? [n]
   (loop [x n i 1]
     (if (neg? x)
@@ -9,7 +7,7 @@
 	(recur (- x i) (inc i))))))
 
 (defn nth-triangle-number [n]
-  (apply #'+ (range 1 (inc n))))
+  (apply + (range 1 (inc n))))
 
 (defn list-factors [n]
   (filter (fn [x] (zero? (rem n x))) (range 1 (inc n))))
@@ -85,7 +83,7 @@
       tri
       (recur (inc n) (+ tri n)))))
 
-(defn test []
+(defn test-solution []
   (let [initial (build-initial-vector 7 6)]
     (loop [vect initial ptr 2]
       (println ptr vect)
@@ -105,7 +103,7 @@
 	(/ nxt 2)
 	(if (< x (/ nxt 3))
 	  (/ nxt 3)
-	  (recur (ceil (/ nxt 2.0))))))))
+	  (recur (Math/ceil (/ nxt 2.0))))))))
 
 (defn find-first-triange-with-at-least-min-divisors [min]
   (let [initial (build-initial-vector min (get-next-second-last-value-for-triangle (dec min)))]
@@ -123,7 +121,7 @@
 ;(println (get-next-triangle-larger-than 10))
 
 (defn find-if-number-has-x-factors [number x]
-  (let [limit (sqrt number)]
+  (let [limit (Math/sqrt number)]
     (loop [found 0 n 2]
       (if (= (* found 2) x)
 	true
@@ -140,4 +138,4 @@
       tri
       (recur (inc n) (+ tri n)))))
 
-(println (find-first-triangle-to-have-more-than-five-hundred-divisors))
+(def solutions (list find-first-triangle-to-have-more-than-five-hundred-divisors))

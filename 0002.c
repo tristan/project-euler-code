@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-int main() {
+void fn0() {
   int f1 = 1;
   int f2 = 2;
   int sum = 0;
@@ -13,3 +13,5 @@ int main() {
   }
   printf("%d\n", sum);
 }
+
+void (*solutions[])() = { fn0, NULL };

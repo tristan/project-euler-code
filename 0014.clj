@@ -1,5 +1,3 @@
-
-
 (defn get-number-of-sequences [start]
   (loop [n start count 1]
     (if (= n 1)
@@ -29,7 +27,7 @@
 (defn find-largest-sequence-under-using-memory [limit]
   (loop [n 1 largest-n 1 no-of-sequences-in-largest-n 1 memory-map {1 1}]
     (if (>= n limit)
-      (list largest-n no-of-sequences-in-largest-n)
+      largest-n
       (let [sequences (get-number-of-sequences-using-memory n memory-map)]
 	(if (< no-of-sequences-in-largest-n sequences)
 	  (recur (inc n) n sequences (assoc memory-map n sequences))
@@ -37,4 +35,4 @@
 
 
 ;(println (find-largest-sequence-under 1000000))
-(println (find-largest-sequence-under-using-memory 1000000))
+(def solutions (list (fn [] (find-largest-sequence-under-using-memory 1000000))))

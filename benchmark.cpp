@@ -7,6 +7,7 @@
 extern std::vector<std::function<void()>> progs;
 
 int main() {
+  std::cout << "==== C++ ====" << std::endl;
   for (auto p: progs) {
     timeval timer[2];
     gettimeofday(&timer[0], NULL);
@@ -20,6 +21,6 @@ int main() {
       usecs += 1000000;
     }
     
-    std::cout << "runtime: " << static_cast<int>(secs * 1000 + usecs / 1000.0 + 0.5) << std::endl;
+    std::cout << "runtime: " << static_cast<int>(secs * 1000 + usecs / 1000.0 + 0.5) << " ms" << std::endl;
   }
 }

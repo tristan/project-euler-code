@@ -26,4 +26,4 @@
   (- (let [sum (reduce + (range 1 101))] (* sum sum))
      (reduce #(+ %1 (* %2 %2)) (range 1 101))))
 
-(println (time (problem-six)))
+(def solutions (list problem-six))

@@ -14,8 +14,9 @@ def primes():
             mem.append(test)
         test += wheel.next()
 
-if __name__ == "__main__":
+def fn0():
     for i,v in enumerate(primes()):
         if i == 10000:
-            print v
-            break;
+            return v
+
+solutions = [fn0]

@@ -69,4 +69,4 @@
 
 ;(println (brute-force-problem-nine))
 ;(println (straightforward-approach 1000))
-(println (parametrisation-approach 1000))
+(def solutions (list (fn [] (parametrisation-approach 1000))))

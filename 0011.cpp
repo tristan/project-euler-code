@@ -1,8 +1,10 @@
 #include <iostream>
 #include <fstream>
 #include <array>
+#include <functional>
+#include <vector>
 
-int main() {
+void fn0() {
   std::array<int, 20*20> grid;
   std::fstream in("0011.txt");
   int i = 0;
@@ -45,6 +47,6 @@ int main() {
   }
 
   std::cout << max << std::endl;
-
-  return 0;
 }
+
+std::vector<std::function<void()>> progs = { fn0 };
